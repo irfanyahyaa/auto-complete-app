@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\placement test\\IlcsPelindoDotNet\\IlcsPelindoDotNet\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\IlcsPelindoDotNet.bundle.scp.css",
+      "PackagePath": "staticwebassets\\IlcsPelindoDotNet.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\placement test\\IlcsPelindoDotNet\\IlcsPelindoDotNet\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "D:\\placement test\\IlcsPelindoDotNet\\IlcsPelindoDotNet\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\placement test\\IlcsPelindoDotNet\\IlcsPelindoDotNet\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\placement test\\IlcsPelindoDotNet\\IlcsPelindoDotNet\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.IlcsPelindoDotNet.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.IlcsPelindoDotNet.props",
+      "PackagePath": "build\\IlcsPelindoDotNet.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.IlcsPelindoDotNet.props",
+      "PackagePath": "buildMultiTargeting\\IlcsPelindoDotNet.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.IlcsPelindoDotNet.props",
+      "PackagePath": "buildTransitive\\IlcsPelindoDotNet.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
