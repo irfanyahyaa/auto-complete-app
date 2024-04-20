@@ -15,7 +15,7 @@
     </div>
     @* country end *@
     
-    @* harbor *@
+    @* harbor start *@
       <div class="form-group mb-3 position-relative">
         <label for="harborInput">Harbor</label>
         <div class="input-group">
@@ -25,6 +25,17 @@
         <div id="harborSuggestions" class="list-group mt-1" style="cursor: pointer"></div>
       </div>
     @* harbor end *@
+    
+    @* goods start *@
+      <div class="form-group mb-3 position-relative">
+        <label for="goodsInput" class="form-label">Goods</label>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control form-control-sm" id="goodsInput" maxlength="8" placeholder="Type a goods...">
+            <button type="button" class="btn btn-sm btn-danger" onclick="clearInput('goodsInput')">&times;</button>
+        </div>
+        <textarea name="goodsGenerate" class="form-control bg-white" id="goodsGenerate" cols="30" rows="5" disabled readonly></textarea>
+      </div>
+    @* goods end *@
   </form>
 </div>
 
@@ -135,6 +146,31 @@
     // harbor end
     
     // goods start
+    $('#goodsInput').on('input', function() {
+      const input = $(this).val().trim();
+      if (input.length === 8) {
+        fetchGoods(input);
+      } else {
+        $('#goodsGenerate').val('');
+      }
+    })
+    
+    function fetchGoods(input) {
+      $.ajax({
+        url: 'http://localhost:3000/barang?hs_code=' + input,
+        method: 'GET',
+          success: function(data) {
+          console.log('fetch')
+            let goodsDetails = data.map(function(goods) {
+                return goods.details;
+            }).join(', '); // Join the details with a comma and space
+            $('#goodsGenerate').val(goodsDetails);
+          },
+          error: function(xhr, status, error) {
+          $('#goodsGenerate').val('Error fetching data. Please try again.');
+          }
+      });
+    }
     // goods end
     
     // price start
