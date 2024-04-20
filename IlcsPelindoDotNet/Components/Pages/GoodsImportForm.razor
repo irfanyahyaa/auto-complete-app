@@ -1,16 +1,13 @@
 @page "/goods-import-form"
 
-<div class="container mt-5 w-75">
+<div class="container my-5 w-75">
   <h3 class="mb-4">Goods Import Form</h3>
 
   <form id="countryForm">
     @* country start *@
     <div class="form-group mb-3 position-relative">
       <label for="countryInput">Country</label>
-      <div class="input-group">
-        <input type="text" class="form-control form-control-sm" id="countryInput" placeholder="Type a country...">
-        <button type="button" class="btn btn-sm btn-danger disabled" id="countryClear" onclick="clearInput('countryInput')">&times;</button>
-      </div>
+      <input type="text" class="form-control form-control-sm mb-3" id="countryInput" placeholder="e.g Indonesia">
       <div id="countrySuggestions" class="list-group mt-1" style="cursor: pointer"></div>
     </div>
     @* country end *@
@@ -18,10 +15,7 @@
     @* harbor start *@
       <div class="form-group mb-3 position-relative">
         <label for="harborInput">Harbor</label>
-        <div class="input-group">
-          <input type="text" class="form-control form-control-sm" id="harborInput" placeholder="Type a harbor...">
-          <button type="button" class="btn btn-sm btn-danger" onclick="clearInput('harborInput')">&times;</button>
-        </div>
+        <input type="text" class="form-control form-control-sm mb-3" id="harborInput" placeholder="e.g Jakarta Harbor">
         <div id="harborSuggestions" class="list-group mt-1" style="cursor: pointer"></div>
       </div>
     @* harbor end *@
@@ -29,39 +23,35 @@
     @* goods start *@
       <div class="form-group mb-3 position-relative">
         <label for="goodsInput" class="form-label">Goods</label>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control form-control-sm" id="goodsInput" maxlength="8" placeholder="Type a goods...">
-            <button type="button" class="btn btn-sm btn-danger" onclick="clearInput('goodsInput')">&times;</button>
-        </div>
+        <input type="text" class="form-control form-control-sm mb-3" id="goodsInput" maxlength="8" placeholder="e.g 12345678">
         <textarea name="goodsGenerate" class="form-control bg-white" id="goodsGenerate" cols="30" rows="5" disabled readonly></textarea>
       </div>
     @* goods end *@
     
     @* price start *@
-        <div class="form-group mb-3 position-relative">
-          <label for="priceInput" class="form-label">Price</label>
-          <div class="input-group mb-3">
-            <input type="number" class="form-control form-control-sm" id="priceInput" placeholder="Type a price...">
-            <button type="button" class="btn btn-sm btn-danger" onclick="clearInput('priceInput')">&times;</button>
-          </div>
-          <label for="priceInput" class="form-label">Bea Fare</label>
-          <input type="text" class="form-control form-control-sm bg-white mb-3" id="beaFareInput" disabled> 
-          <label for="priceInput" class="form-label">Bea Price</label>
-          <input type="text" class="form-control form-control-sm bg-white mb-3" id="beaPriceInput" disabled> 
-        </div>
-      @* price end *@
+      <div class="form-group mb-3 position-relative">
+        <label for="priceInput" class="form-label">Price</label>
+        <input type="number" class="form-control form-control-sm mb-3" id="priceInput" placeholder="e.g 100000">
+        <label for="priceInput" class="form-label">Bea Fare</label>
+        <input type="text" class="form-control form-control-sm bg-white mb-3" id="beaFareInput" disabled> 
+        <label for="priceInput" class="form-label">Bea Price</label>
+        <input type="text" class="form-control form-control-sm bg-white mb-3" id="beaPriceInput" disabled> 
+      </div>
+    @* price end *@
+    
+    @* submit and reset start *@
+    <button type="reset" class="btn btn-success">Submit</button>
+    <button type="reset" class="btn btn-danger">Reset</button>
+    @* submit and reset end *@
   </form>
 </div>
 
 <script >
-  function clearInput(inputId) {
-    document.getElementById(inputId).value = '';
-  }
-
   $(document).ready(function() {
     // global variable
     let countryCode;
     let beaFare;
+    let baseURL = "https://insw-dev.ilcs.co.id";
     
     // country start
     $('#countryInput').on('input', function() {
@@ -76,13 +66,13 @@
     
     function fetchCountries(input) {
       $.ajax({
-        url: `http://localhost:3000/negara?ur_negara=${input}`,
+        url: `${baseURL}/n/negara?ur_negara=${input}`,
         method: 'GET',
         success: function(data) {
           showCountries(data);
         },
         error: function() {
-          $('#countrySuggestions').text('Error fetching data').show();
+          $('#countrySuggestions').val('Error fetching data. Please try again.');
         }
       });
     }
@@ -93,11 +83,12 @@
     
       countries.forEach(function(country) {
         const countryName = country.name.toUpperCase();
-        countryCode = country.kd_negara.toUpperCase();
         const countryItem = $('<div class="list-group-item list-group-item-action">').text(countryName);
         
         countryItem.click(function() {
           $('#countryInput').val(countryName);
+          countryCode = country.kd_negara.toUpperCase();
+          console.log(countryCode)
           hideCountrySuggestions();
         });
     
@@ -113,7 +104,7 @@
     // country end
     
     // harbor start
-    $('#harborInput').on('input', function() {
+    $('#harborInput').on('keyup', function() {
       const input = $(this).val().trim();
       if (input.length >= 3) {
         fetchHarbors(input);
@@ -124,13 +115,13 @@
     
     function fetchHarbors(input) {
       $.ajax({
-        url: 'http://localhost:3000/pelabuhan?kd_negara=' + countryCode + '&ur_pelabuhan=' + input,
+        url: `${baseURL}/n/pelabuhan?kd_negara=${countryCode}&ur_pelabuhan=${input}`,
         method: 'GET',
         success: function(data) {
           showHarbors(data);
         },
         error: function() {
-          $('#harborSuggestions').text('Error fetching data').show();
+          $('#harborSuggestions').val('Error fetching data. Please try again.');
         }
       });
     }
@@ -174,7 +165,7 @@
     
     function fetchGoods(input) {
       $.ajax({
-        url: 'http://localhost:3000/barang?hs_code=' + input,
+        url: `${baseURL}/n/barang?hs_code=${input}`,
         method: 'GET',
           success: function(data) {
             let goodsDetails = data.map(function(goods) {
@@ -182,7 +173,7 @@
             }).join(', ');
             $('#goodsGenerate').val(goodsDetails);
           },
-          error: function(xhr, status, error) {
+          error: function() {
           $('#goodsGenerate').val('Error fetching data. Please try again.');
           }
       });
@@ -195,33 +186,23 @@
       if (input.length > 0 && !isNaN(input)) {
         const price = parseFloat(input);
         const finalPrice = price * (beaFare / 100);
-        $('#beaPriceInput').val(finalPrice.toFixed(2));
+        $('#beaPriceInput').val('Rp.' + finalPrice.toFixed(2));
       } else {
         $('#beaPriceInput').val('');
       }
     });
-    /*$('#priceInput').on('input', function() {
-      const input = $(this).val().trim();
-      if (input.length > 0) {
-        console.log(beaFare)
-        const beaPrice = input * beaFare;
-        $('#beaPriceInput').val(beaPrice);
-      } else {
-        $('#beaPriceInput').val('');
-      }
-    })*/
     // price end
     
     // bea fare start
     function fetchBeaFare(input) {
       $.ajax({
-        url: 'http://localhost:3000/tarif?hs_code=' + input,
+        url: `${baseURL}/n/tarif?hs_code=${input}`,
         method: 'GET',
           success: function(data) {
           beaFare = data[0].rate_bea_masuk;
           $('#beaFareInput').val(data[0].rate_bea_masuk);
           },
-          error: function(xhr, status, error) {
+          error: function() {
           $('#beaFareInput').val('Error fetching data. Please try again.');
           }
       });
