@@ -9,11 +9,22 @@
       <label for="countryInput">Country</label>
       <div class="input-group">
         <input type="text" class="form-control form-control-sm" id="countryInput" placeholder="Type a country...">
-        <button type="button" class="btn btn-sm btn-danger" onclick="clearInput('countryInput')">&times;</button>
+        <button type="button" class="btn btn-sm btn-danger disabled" id="countryClear" onclick="clearInput('countryInput')">&times;</button>
       </div>
       <div id="countrySuggestions" class="list-group mt-1" style="cursor: pointer"></div>
     </div>
     @* country end *@
+    
+    @* harbor *@
+      <div class="form-group mb-3 position-relative">
+        <label for="harborInput">Harbor</label>
+        <div class="input-group">
+          <input type="text" class="form-control form-control-sm" id="harborInput" placeholder="Type a harbor...">
+          <button type="button" class="btn btn-sm btn-danger" onclick="clearInput('harborInput')">&times;</button>
+        </div>
+        <div id="harborSuggestions" class="list-group mt-1" style="cursor: pointer"></div>
+      </div>
+    @* harbor end *@
   </form>
 </div>
 
@@ -30,16 +41,11 @@
     $('#countryInput').on('input', function() {
       const input = $(this).val().trim();
       if (input.length >= 3) {
+        $('#countryClear').removeClass('disabled');
         fetchCountries(input);
       } else {
         hideCountrySuggestions();
       }
-    });
-    
-    $('#countrySuggestions').on('click', 'div', function() {
-      const country = $(this).text();
-      $('#countryInput').val(country);
-      hideCountrySuggestions();
     });
     
     function fetchCountries(input) {
@@ -61,6 +67,7 @@
     
       countries.forEach(function(country) {
         const countryName = country.name.toUpperCase();
+        countryCode = country.kd_negara.toUpperCase();
         const countryItem = $('<div class="list-group-item list-group-item-action">').text(countryName);
         
         countryItem.click(function() {
@@ -78,5 +85,62 @@
       $('#countrySuggestions').hide();
     }
     // country end
+    
+    // harbor start
+    $('#harborInput').on('input', function() {
+      const input = $(this).val().trim();
+      if (input.length >= 3) {
+        fetchHarbors(input);
+      } else {
+        hideHarborSuggestions();
+      }
+    });
+    
+    function fetchHarbors(input) {
+      $.ajax({
+        url: 'http://localhost:3000/pelabuhan?kd_negara=' + countryCode + '&ur_pelabuhan=' + input,
+        method: 'GET',
+        success: function(data) {
+          showHarbors(data);
+        },
+        error: function() {
+          $('#harborSuggestions').text('Error fetching data').show();
+        }
+      });
+    }
+    
+    function showHarbors(harbors) {
+      const harborList = $('#harborSuggestions');
+      harborList.empty();
+    
+      harbors.forEach(function(harbor) {
+        const harborName = harbor.ur_pelabuhan.toUpperCase();
+        const harborItem = $('<div class="list-group-item list-group-item-action">').text(harborName);
+        
+        harborItem.click(function() {
+          $('#harborInput').val(harborName);
+          hideHarborSuggestions();
+        });
+    
+        harborList.append(harborItem);
+      });
+    
+      harborList.show();
+    }
+    
+    function hideHarborSuggestions() {
+      $('#harborSuggestions').hide();
+    }
+      
+    // harbor end
+    
+    // goods start
+    // goods end
+    
+    // price start
+    // price end
+    
+    // bea fare start
+    // bea fare end
   });
 </script>
