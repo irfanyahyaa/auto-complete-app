@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IlcsPelindoDotNet")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b672af4375c3f983818609d5509d05713f71688")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d71d3090fa61372a09848a6912e6a3d773b2f9bc")]
 [assembly: System.Reflection.AssemblyProductAttribute("IlcsPelindoDotNet")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IlcsPelindoDotNet")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
