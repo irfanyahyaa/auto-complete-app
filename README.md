@@ -2,6 +2,7 @@
 # Auto Complete App
 
 The objective of this project is to develop a web application using Blazor framework in .NET that provides autocomplete functionality for users, enhancing their browsing and searching experience. The app will allow users to quickly find relevant suggestions as they type in a search box.
+
 ***note:*** Due to bugs that have not been resolved, you must reload the page so that the features provided can run
 
 
